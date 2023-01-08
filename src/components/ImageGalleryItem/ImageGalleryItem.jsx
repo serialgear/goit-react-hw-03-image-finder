@@ -5,18 +5,22 @@ import PropTypes from 'prop-types';
 import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled';
 
 class ImageGalleryItem extends React.Component {
+  static propTypes = {
+    webformatURL: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+  };
+
   state = {
     showModal: false,
   };
 
-  //----Показываем или скрываем модалку----
-  toggalModal = () => {
+  toggleModal = () => {
     this.setState(({ showModal }) => ({
       showModal: !showModal,
     }));
   };
 
-  //----Рендер----
   render() {
     const { webformatURL, largeImageURL, description } = this.props;
     const { showModal } = this.state;
@@ -27,14 +31,14 @@ class ImageGalleryItem extends React.Component {
           <GalleryImage
             src={webformatURL}
             alt={description}
-            onClick={this.toggalModal}
+            onClick={this.toggleModal}
           />
 
           {showModal && (
             <Modal
               largeImageURL={largeImageURL}
               description={description}
-              onClose={this.toggalModal}
+              onClose={this.toggleModal}
             />
           )}
         </GalleryItem>
@@ -44,9 +48,3 @@ class ImageGalleryItem extends React.Component {
 }
 
 export default ImageGalleryItem;
-
-ImageGalleryItem.propTypes = {
-  webformatURL: PropTypes.string.isRequired,
-  largeImageURL: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-};

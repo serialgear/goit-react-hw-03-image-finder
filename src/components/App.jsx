@@ -2,6 +2,7 @@ import React from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { fetchImages } from './api';
 import Searchbar from './Searchbar/Searchbar';
@@ -17,7 +18,7 @@ class App extends React.Component {
     input: '',
     page: 1,
     loading: false,
-    visibleLoadMore: false,
+    showLoadMore: false,
   };
 
   async componentDidUpdate(_, prevState) {
@@ -36,18 +37,16 @@ class App extends React.Component {
         this.setState(prevState => ({
           images: [...prevState.images, ...foundImages.hits],
           loading: false,
-          visibleLoadMore: this.state.images.length !== foundImages.totalHits,
+          showLoadMore: this.state.images.length !== foundImages.totalHits,
         }));
 
         if (foundImages.hits.length === 0) {
-          toast.warning(
-            'Sorry, there are no images matching your search query. Please try again.'
-          );
+          toast.warning('No pictures with this title');
           return;
         }
       } catch (error) {
         console.log(error);
-        toast.error('Something went wrong :( Try again.');
+        toast.error('Something went wrong. Try again later.');
       }
     }
   }
@@ -64,7 +63,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { input, loading, images, visibleLoadMore } = this.state;
+    const { input, loading, images, showLoadMore } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleFormSubmit} />
@@ -75,7 +74,7 @@ class App extends React.Component {
 
         {loading && <Loader loading={loading} />}
 
-        {visibleLoadMore && <Button onClick={this.loadMore} />}
+        {showLoadMore && <Button onClick={this.loadMore} />}
 
         <ToastContainer autoClose={3000} theme="colored" />
       </>
