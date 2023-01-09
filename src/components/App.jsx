@@ -4,7 +4,7 @@ import { animateScroll as scroll } from 'react-scroll';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { fetchImages } from './api';
+import { fetchImages } from '../api';
 import Searchbar from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Loader } from './Loader/Loader';
@@ -21,13 +21,17 @@ class App extends React.Component {
     showLoadMore: false,
   };
 
+  componentDidMount() {
+    this.setState({ images: null });
+  }
+
   async componentDidUpdate(_, prevState) {
     if (
       prevState.input !== this.state.input ||
       prevState.page !== this.state.page
     ) {
       try {
-        this.setState({ loading: true });
+        this.setState({ loading: true, showLoadMore: false });
 
         const foundImages = await fetchImages(
           this.state.input,
