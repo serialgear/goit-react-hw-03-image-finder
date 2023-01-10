@@ -74,7 +74,7 @@ class App extends React.Component {
 
         {!input && <Text>Enter image name, please!</Text>}
 
-        {!loading && images && <ImageGallery images={images} />}
+        {images && <ImageGallery images={images} />}
 
         {loading && <Loader loading={loading} />}
 
